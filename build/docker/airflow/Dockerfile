@@ -16,7 +16,7 @@ LABEL org.label-schema.schema-version="1.0"
 
 # cannot inherit ARG from parent image; this is the default airflow uid
 ARG airflow_uid="50000"
-ARG spark_version="3.0.0"
+ARG spark_version="3.1.2"
 
 # install default jdk as root
 USER root
