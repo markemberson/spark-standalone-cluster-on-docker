@@ -1,7 +1,9 @@
 applications:
+  airflow: "2.0.0"
   spark: "3.1.2"
   jupyterlab: "3.2.0"
 build:
-  build_base: "true"
-  build_spark: "true"
-  build_jupyterlab: "true"
+  build_airflow: "true"
+  build_base: "false"
+  build_spark: "false"
+  build_jupyterlab: "false"

@@ -8,6 +8,57 @@ volumes:
     name: "hadoop-distributed-file-system"
     driver: local
 services:
+  postgres:
+    image: postgres:12
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    ports:
+      - "5433:5432"
+  scheduler:
+    image: spark-airflow:2.0.0-spark-3.0.1
+    container_name: airflow-scheduler
+    restart: always
+    depends_on:
+      - postgres
+      - webserver
+    env_file:
+      - ./docker/airflow/environment
+    ports:
+      - "8793:8793"
+    volumes:
+      - shared-workspace:/opt/workspace
+      - ./docker/airflow/dags:/opt/airflow/dags
+      - ./docker/airflow/airflow-logs:/opt/airflow/logs
+    command: scheduler
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+  webserver:
+    image: spark-airflow:2.0.0-spark-3.0.1
+    container_name: airflow-webserver
+    hostname: webserver
+    restart: always
+    depends_on:
+      - postgres
+    env_file:
+      - ./docker/airflow/environment
+    volumes:
+      - shared-workspace:/opt/workspace
+      - ./docker/airflow/dags:/opt/airflow/dags
+      - ./docker/airflow/scripts:/opt/airflow/scripts
+      - ./docker/airflow/airflow-logs:/opt/airflow/logs
+    ports:
+      - "8090:8080"
+    entrypoint: /opt/airflow/scripts/airflow-entrypoint.sh
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+      interval: 30s
+      timeout: 30s
+      retries: 32
   jupyterlab:
     image: jupyterlab:3.2.0-spark-3.1.2
     container_name: jupyterlab
@@ -48,4 +99,3 @@ services:
       - shared-workspace:/opt/workspace
     depends_on:
       - spark-master
-...
