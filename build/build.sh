@@ -28,7 +28,7 @@ elif [[ "${SPARK_VERSION_MAJOR}"  == "3" ]]
 then
   HADOOP_VERSION="3.2"
   SCALA_VERSION="2.12.10"
-  SCALA_KERNEL_VERSION="0.10.9"
+  SCALA_KERNEL_VERSION="0.11.2"
 else
   exit 1
 fi
