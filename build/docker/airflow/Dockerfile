@@ -1,5 +1,5 @@
 ARG airflow_image_version=apache/airflow:latest
-from ${airflow_image_version}
+FROM ${airflow_image_version}
 LABEL maintainer="Todd Greenwood-Geer <toddg@envirosoftwaresolutions.com>"
 
 # -- Layer: Image Metadata
@@ -16,7 +16,7 @@ LABEL org.label-schema.schema-version="1.0"
 
 # cannot inherit ARG from parent image; this is the default airflow uid
 ARG airflow_uid="50000"
-ARG spark_version="3.1.2"
+ARG spark_version="3.2.0"
 
 # install default jdk as root
 USER root
@@ -43,4 +43,4 @@ RUN pip install "requests==${requests_version}" \
                 "numpy==${numpy_version}" \
                 "pandas==${pandas_version}" \
                 "matplotlib==${matplotlib_version}"\
-                "scipy==${scipy_version}"\
+                "scipy==${scipy_version}"

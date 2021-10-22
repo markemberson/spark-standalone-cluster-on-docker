@@ -25,10 +25,8 @@ $SPARK_VERSION_MAJOR = 3
 
 if($SPARK_VERSION_MAJOR = 3) {
   $HADOOP_VERSION = "3.2"
-  #$SCALA_VERSION = "2.13.4"
-  #$SCALA_KERNEL_VERSION = "0.11.2"
   $SCALA_VERSION = "2.12.10"
-  $SCALA_KERNEL_VERSION = "0.10.9"
+  $SCALA_KERNEL_VERSION = "0.11.1"
 }
 elseif($SPARK_VERSION_MAJOR = 2) {
   $HADOOP_VERSION = "2.7"
@@ -109,21 +107,21 @@ function buildImages() {
         --build-arg spark_version="${SPARK_VERSION}" `
         --build-arg hadoop_version="${HADOOP_VERSION}" `
         -f docker/spark-base/Dockerfile `
-        -t spark-base:${SPARK_VERSION}-hadoop-${HADOOP_VERSION} .
+        -t spark-base:${SPARK_VERSION} .
 
     docker build `
         --build-arg build_date="${BUILD_DATE}" `
         --build-arg spark_version="${SPARK_VERSION}" `
         --build-arg hadoop_version="${HADOOP_VERSION}" `
         -f docker/spark-master/Dockerfile `
-        -t spark-master:${SPARK_VERSION}-hadoop-${HADOOP_VERSION} .
+        -t spark-master:${SPARK_VERSION} .
 
     docker build `
         --build-arg build_date="${BUILD_DATE}" `
         --build-arg spark_version="${SPARK_VERSION}" `
         --build-arg hadoop_version="${HADOOP_VERSION}" `
         -f docker/spark-worker/Dockerfile `
-        -t spark-worker:${SPARK_VERSION}-hadoop-${HADOOP_VERSION} .
+        -t spark-worker:${SPARK_VERSION} .
   }
 
   if($SHOULD_BUILD_JUPYTERLAB){
